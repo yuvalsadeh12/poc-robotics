@@ -1,0 +1,26 @@
+[project]
+name = "poc-robotics"
+version = "0.1.0"
+description = "POC: MuJoCo + Gymnasium + Stable-Baselines3 robotic arm RL on CPU"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "gymnasium[mujoco]>=1.4.0",
+    "mujoco>=4.0.1",
+    "stable-baselines3>=2.9.2",
+    "torch>=2.15.0",
+]
+
+# --- CPU-only PyTorch -------------------------------------------------------
+# Stable-Baselines3 depends on PyTorch. On Linux, the default PyPI torch wheel
+# pulls in ~2-3 GB of CUDA libraries. We point uv at PyTorch's CPU-only index
+# so every teammate (Windows / Linux / macOS) gets a small, CPU-only build.
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = [
+  { index = "pytorch-cpu", marker = "sys_platform != 'darwin'" },
+]
